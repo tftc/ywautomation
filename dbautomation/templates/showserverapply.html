@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>tftc数据库运维平台</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="/static/css/bootstrap.css">
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.css">
+<link rel="stylesheet" href="/static/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/static/css/uniform.default.css">
+<link rel="stylesheet" href="/static/css/bootstrap.datepicker.css">
+<link rel="stylesheet" href="/static/css/jquery.cleditor.css">
+<link rel="stylesheet" href="/static/css/jquery.plupload.queue.css">
+<link rel="stylesheet" href="/static/css/jquery.tagsinput.css">
+<link rel="stylesheet" href="/static/css/jquery.ui.plupload.css">
+<link rel="stylesheet" href="/static/js/tableTools/css/TableTools.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="topbar">
+	<div class="container-fluid">
+	</div>
+</div>
+<div class="breadcrumbs">
+</div>
+<div class="main">
+	</div>
+	<div class="content">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="box">
+						<div class="box-head">
+							<h3>服务器监控展示</h3>
+						</div>
+						<div class="box-content box-nomargin">
+							<table class='table dataTable table-bordered'>
+								<thead>
+									<tr>
+										<th with="30px">服务器IP</th>
+										<th>服务名称</th>
+										<th>应用IP</th>
+										<th>应用名称</th>
+										<th>端口状态</th>
+										<th>应用状态</th>
+										<th>内容</th>
+									</tr>
+								</thead>
+								<tbody>{% for item in datas %}
+									<tr>
+										<td colspan="7" style='background-color:#d6d6d6'>{{item.0.0.0}}</td>
+									</tr>
+									{% for item1 in item %}
+									<tr>
+										<td width="60px"></td>
+										<td colspan="6" style='background-color:#f2f2f2'>{{item1.0.1}}</td>
+									</tr>
+									{% for item2 in item1 %}
+									<tr>
+										<td width="60px"></td>
+										<td width="60px"></td>
+										<td width="60px">{{item2.2}}</td>
+										<td width="60px">{{item2.4}}</td>
+										{% if item2.8 >= 1 %}
+											<td width="60px"><img src="/static/img/icons/bullet_green.png" alt=""></a></td>
+										{% elif item2.8 == 0 %}
+											<td width="60px"><img src="/static/img/icons/bullet_red.png" alt=""></a></td>
+										{%endif%}
+										{% if item2.7 >= 1 %}
+											<td width="60px"><img src="/static/img/icons/bullet_green.png" alt=""></a></td>
+										{% elif item2.7 == 0 %}
+											<td width="60px"><img src="/static/img/icons/bullet_red.png" alt=""></a></td>
+										{%endif%}
+										<td ></td>
+									</tr>{% endfor %}{% endfor %}{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script LANGUAGE=javascript>
+function p_update() {
+	var msg = "您真的确定要修改该端口报警吗？请确认！";
+	if (confirm(msg)==true){
+		return true;
+	}else{
+		return false;
+	}
+}
+function p_del() {
+	var msg = "您真的确定要删除该端口报警吗？请确认！";
+	if (confirm(msg)==true){
+		return true;
+	}else{
+		return false;
+	}
+}
+</script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/less.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.uniform.min.js"></script>
+<script src="/static/js/bootstrap.timepicker.js"></script>
+<script src="/static/js/bootstrap.datepicker.js"></script>
+<script src="/static/js/chosen.jquery.min.js"></script>
+<script src="/static/js/jquery.fancybox.js"></script>
+<script src="/static/js/plupload/plupload.full.js"></script>
+<script src="/static/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script src="/static/js/jquery.cleditor.min.js"></script>
+<script src="/static/js/jquery.inputmask.min.js"></script>
+<script src="/static/js/jquery.tagsinput.min.js"></script>
+<script src="/static/js/jquery.mousewheel.js"></script>
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<script src="/static/js/jquery.dataTables.bootstrap.js"></script>
+<script src="/static/js/jquery.textareaCounter.plugin.js"></script>
+<script src="/static/js/ui.spinner.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/tableTools/js/TableTools.min.js"></script>
+<script src="/static/js/custom.js"></script><script src="/static/js/demo.js"></script>
+</body>
+</html>

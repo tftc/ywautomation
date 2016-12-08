@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>tftc数据库运维平台</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="/static/css/bootstrap.css">
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.css">
+<link rel="stylesheet" href="/static/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/static/css/uniform.default.css">
+<link rel="stylesheet" href="/static/css/bootstrap.datepicker.css">
+<link rel="stylesheet" href="/static/css/jquery.cleditor.css">
+<link rel="stylesheet" href="/static/css/jquery.plupload.queue.css">
+<link rel="stylesheet" href="/static/css/jquery.tagsinput.css">
+<link rel="stylesheet" href="/static/css/jquery.ui.plupload.css">
+<link rel="stylesheet" href="/static/js/tableTools/css/TableTools.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="topbar">
+	<div class="container-fluid">
+		<a href="/dashboard/" class='company'>tftc数据库运维平台</a>
+		<form action="#">
+			<input type="text" value="Search here...">
+		</form>
+		<ul class='mini'>
+			<li class='dropdown dropdown-noclose supportContainer'>
+				<a href="/logout/" class='dropdown-toggle' data-toggle="dropdown">
+					<img src="/static/img/icons/fugue/control-power.png" alt="">
+					退出
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="breadcrumbs">
+	<div class="container-fluid">
+		<ul class="bread pull-left">
+			<li>
+				<a href="/dashboard/"><i class="icon-home icon-white"></i></a>
+			</li>
+			<li>
+				<a href="/dashboard/">
+					面板
+				</a>
+			</li>
+		</ul>
+
+	</div>
+</div>
+<div class="main">
+	<div class="container-fluid">
+	<div class="navi">
+		<ul class='main-nav'>
+			<li class='active'>
+				<a href="/dashboard/" class='light'>
+					<div class="ico"><i class="icon-home icon-white"></i></div>
+					面板
+				<!--	<span class="label label-warning">10</span> -->
+				</a>
+			</li>
+			<li class='active open'>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+						数据库更新
+					<img src="/static/img/toggle-subnav-up-white.png" alt="">
+				</a>
+				<ul class='collapsed-nav'>
+					<li>
+						<a href="/mysqldata/">
+							MySQL 更新
+						</a>
+					</li>
+					{% if num3 == 1 %}
+					<li>
+						<a href="/serverdatalist/">
+							MySQL/Server配置
+						</a>
+					</li>
+					{% endif %}
+				</ul>
+			</li>
+			{% if num3 == 1 %}
+			<li>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+					数据库监控
+					<img src="/static/img/toggle-subnav-down.png" alt="">
+				</a>
+				<ul class='collapsed-nav closed'>
+					<li class='active'>
+						<a href="/mysqlmonitor/">
+							DB监控配置
+						</a>
+					</li>
+					<li>
+						<a href="/dbgraphshow/">
+							监控图形展示
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+					数据库report
+					<img src="/static/img/toggle-subnav-down.png" alt="">
+				</a>
+				<ul class='collapsed-nav closed'>
+					<li>
+						<a href="/mysqlreportdata/">
+							MySQL-report
+						</a>
+					</li>
+				</ul>
+			</li>
+			{% endif %}
+		</ul>
+	</div>
+	<div class="content">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="box">
+						<div class="box-head">
+							<h3>添加监控关联</h3>
+						</div>
+						<div class="box-content">
+							<form action="" method="post" class="form-horizontal validate" onsubmit="return toVaild()">
+								     <div class="control-group">
+										<label for="monitortype" class="control-label">监控名称</label>
+										<div class="controls">
+											<select name="monitortype" id="monitortype">
+												<option value="1">db监控</option>
+												<option value="1">服务器监控</option>
+											</select>
+										</div>
+									</div>
+								 	<div class="control-group">
+										<label for="dbname" class="control-label">DB名称</label>
+										<div class="controls">
+											<input type="text" name="dbname" id="dbname" class="{required:true}">
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="dbtype" class="control-label">db类型</label>
+										<div class="controls">
+											<input type="text" name="dbtype" id="dbtype" class="{required:true}">
+											<span class="help-inline">mysql,redis,oracle...</span>
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="dbrole" class="control-label">db角色</label>
+										<div class="controls">
+											<input type="text" name="dbrole" id="dbrole" class="{required:true}">
+											<span class="help-inline">master/slave/date-node/sql-node</span>
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="dbport" class="control-label">db端口</label>
+										<div class="controls">
+											<input type="text" name="dbport" id="dbport" class="{required:true}">
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="dbuser" class="control-label">DB用户</label>
+										<div class="controls">
+											<input type="text" name="dbuser" id="dbuser" class="{required:true}">
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="dbpassword" class="control-label">db密码</label>
+										<div class="controls">
+											<input type="password" name="dbpassword" id="dbpassword" class="{required:true}">
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="defaultsdbname" class="control-label">默认database</label>
+										<div class="controls">
+											<input type="text" name="defaultsdbname" id="defaultsdbname" class="{required:true}">
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="dbcontent" class="control-label">服务器描述</label>
+										<div class="controls">
+											<textarea name="dbcontent" id="dbcontent" class='input-square span9 counter required:true' data-max="500" rows='20'></textarea>
+										</div>
+									</div>
+									<div class="submit">
+										<button class="btn btn-primary" >添加数据库</button>
+									</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script language="javascript">
+function toVaild(){
+    var select_val = document.getElementById("select").value;
+    var dbname_val = document.getElementById("dbname").value;
+    var dbtype_val = document.getElementById("dbtype").value;
+    var dbrole_val = document.getElementById("dbrole").value;
+    var dbport_val = document.getElementById("dbport").value;
+    var dbuser_val = document.getElementById("dbuser").value;
+    var dbpassword_val = document.getElementById("dbpassword").value;
+    var defaultsdbname_val = document.getElementById("defaultsdbname").value;
+
+    if(select_val == '' || dbname_val == '' || dbtype_val == '' || dbrole_val == '' || dbport_val == '' || dbuser == '' || dbpassword == '' || defaultsdbname == ''){
+     	if(select_val == '' ){
+     		alert("服务器名称为空，不进行提交");
+        	return false;
+        }
+        if(dbname_val == '' ){
+     		alert("DB名称为空，不进行提交");
+        	return false;
+        }
+        if(dbtype_val == '' ){
+     		alert("数据库类型为空，不进行提交");
+        	return false;
+        }
+        if(dbrole_val == '' ){
+     		alert("数据库角色为空，不进行提交");
+        	return false;
+        }
+        if(dbport_val == '' ){
+     		alert("数据库端口为空，不进行提交");
+        	return false;
+        }
+        if(dbuser == '' ){
+     		alert(" 数据库用户为空，不进行提交");
+        	return false;
+        }
+        if(dbpassword == '' ){
+     		alert("数据库密码为空，不进行提交");
+        	return false;
+        }
+        if(defaultsdbname == '' ){
+     		alert("数据库密码为空，不进行提交");
+        	return false;
+        }
+    }
+}
+</script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/less.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.validate.min.js"></script>
+<script src="/static/js/jquery.uniform.min.js"></script>
+<script src="/static/js/bootstrap.timepicker.js"></script>
+<script src="/static/js/bootstrap.datepicker.js"></script>
+<script src="/static/js/chosen.jquery.min.js"></script>
+<script src="/static/js/jquery.fancybox.js"></script>
+<script src="/static/js/plupload/plupload.full.js"></script>
+<script src="/static/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script src="/static/js/jquery.cleditor.min.js"></script>
+<script src="/static/js/jquery.inputmask.min.js"></script>
+<script src="/static/js/jquery.tagsinput.min.js"></script>
+<script src="/static/js/jquery.mousewheel.js"></script>
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<script src="/static/js/jquery.dataTables.bootstrap.js"></script>
+<script src="/static/js/jquery.textareaCounter.plugin.js"></script>
+<script src="/static/js/ui.spinner.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/tableTools/js/TableTools.min.js"></script>
+<script src="/static/js/custom.js"></script><script src="/static/js/demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>tftc数据库运维平台</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="/static/css/bootstrap.css">
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.css">
+<link rel="stylesheet" href="/static/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/static/css/uniform.default.css">
+<link rel="stylesheet" href="/static/css/bootstrap.datepicker.css">
+<link rel="stylesheet" href="/static/css/jquery.cleditor.css">
+<link rel="stylesheet" href="/static/css/jquery.plupload.queue.css">
+<link rel="stylesheet" href="/static/css/jquery.tagsinput.css">
+<link rel="stylesheet" href="/static/css/jquery.ui.plupload.css">
+<link rel="stylesheet" href="/static/js/tableTools/css/TableTools.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="topbar">
+	<div class="container-fluid">
+		<a href="/dashboard/" class='company'>tftc数据库运维平台</a>
+		<form action="#">
+			<input type="text" value="Search here...">
+		</form>
+		<ul class='mini'>
+			<li class='dropdown dropdown-noclose supportContainer'>
+				<a href="/logout/" class='dropdown-toggle' data-toggle="dropdown">
+					<img src="/static/img/icons/fugue/control-power.png" alt="">
+					退出
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="breadcrumbs">
+	<div class="container-fluid">
+		<ul class="bread pull-left">
+			<li>
+				<a href="/dashboard/"><i class="icon-home icon-white"></i></a>
+			</li>
+			<li>
+				<a href="/dashboard/">
+					面板
+				</a>
+			</li>
+		</ul>
+
+	</div>
+</div>
+<div class="main">
+	<div class="container-fluid">
+	<div class="navi">
+		<ul class='main-nav'>
+			<li class=''>
+				<a href="/dashboard/" class='light'>
+					<div class="ico"><i class="icon-home icon-white"></i></div>
+					面板
+				</a>
+			</li>
+			<li class='active open'>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+						数据库更新
+					<img src="/static/img/toggle-subnav-up-white.png" alt="">
+				</a>
+				<ul class='collapsed-nav'>
+					<li class='active'>
+						<a href="/mysqldata/">
+							MySQL 更新
+						</a>
+					</li>
+					{% if num3 == 1 %}
+					<li>
+						<a href="/serverdatalist/">
+							MySQL/Server配置
+						</a>
+					</li>
+					{% endif %}
+				</ul>
+			</li>
+			{% if num3 == 1 %}
+			<li>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+					数据库监控
+					<img src="/static/img/toggle-subnav-down.png" alt="">
+				</a>
+				<ul class='collapsed-nav closed'>
+					<li>
+						<a href="/mysqlmonitor/">
+							DB监控配置
+						</a>
+					</li>
+					<li>
+						<a href="/dbgraphshow/">
+							监控图形展示
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+					数据库report
+					<img src="/static/img/toggle-subnav-down.png" alt="">
+				</a>
+				<ul class='collapsed-nav closed'>
+					<li>
+						<a href="/mysqlreportdata/">
+							MySQL-report
+						</a>
+					</li>
+				</ul>
+			</li>
+			{% endif %}
+		</ul>
+	</div>
+	<div class="content">
+		<div class="row-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="box">{% for item in datas %}
+						<div class="box-head">
+							<h3>{{item.0}}提交的到{{item.1}}上执行的sql</h3>
+						</div>
+						<div class="box-content box-nomargin">
+							<thead>
+								<div class="control-group">
+									<textarea class='uneditable input-square span9 counter' data-max="5000" rows='20'>{{item.2}}</textarea>
+								</div>
+								<div class="submit">
+									<button class="btn btn-primary" onclick="javascript:history.back(-1);">返回</button>
+								</div>
+							</thead>
+						</div>
+					</div>{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/less.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.uniform.min.js"></script>
+<script src="/static/js/bootstrap.timepicker.js"></script>
+<script src="/static/js/bootstrap.datepicker.js"></script>
+<script src="/static/js/chosen.jquery.min.js"></script>
+<script src="/static/js/jquery.fancybox.js"></script>
+<script src="/static/js/plupload/plupload.full.js"></script>
+<script src="/static/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script src="/static/js/jquery.cleditor.min.js"></script>
+<script src="/static/js/jquery.inputmask.min.js"></script>
+<script src="/static/js/jquery.tagsinput.min.js"></script>
+<script src="/static/js/jquery.mousewheel.js"></script>
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<script src="/static/js/jquery.dataTables.bootstrap.js"></script>
+<script src="/static/js/jquery.textareaCounter.plugin.js"></script>
+<script src="/static/js/ui.spinner.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/tableTools/js/TableTools.min.js"></script>
+<script src="/static/js/custom.js"></script><script src="/static/js/demo.js"></script>
+</body>
+</html>

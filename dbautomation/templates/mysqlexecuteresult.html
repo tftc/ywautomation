@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>tftc数据库运维平台</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="/static/css/bootstrap.css">
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.css">
+<link rel="stylesheet" href="/static/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/static/css/uniform.default.css">
+<link rel="stylesheet" href="/static/css/bootstrap.datepicker.css">
+<link rel="stylesheet" href="/static/css/jquery.cleditor.css">
+<link rel="stylesheet" href="/static/css/jquery.plupload.queue.css">
+<link rel="stylesheet" href="/static/css/jquery.tagsinput.css">
+<link rel="stylesheet" href="/static/css/jquery.ui.plupload.css">
+<link rel="stylesheet" href="/static/js/tableTools/css/TableTools.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="topbar">
+	<div class="container-fluid">
+		<a href="/dashboard/" class='company'>tftc数据库运维平台</a>
+		<form action="#">
+			<input type="text" value="Search here...">
+		</form>
+		<ul class='mini'>
+			<li class='dropdown dropdown-noclose supportContainer'>
+				<a href="/logout/" class='dropdown-toggle' data-toggle="dropdown">
+					<img src="/static/img/icons/fugue/control-power.png" alt="">
+					退出
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="breadcrumbs">
+	<div class="container-fluid">
+		<ul class="bread pull-left">
+			<li>
+				<a href="/dashboard/"><i class="icon-home icon-white"></i></a>
+			</li>
+			<li>
+				<a href="/dashboard/">
+					面板
+				</a>
+			</li>
+		</ul>
+
+	</div>
+</div>
+<div class="main">
+	<div class="container-fluid">
+	<div class="navi">
+		<ul class='main-nav'>
+			<li class=''>
+				<a href="/dashboard/" class='light'>
+					<div class="ico"><i class="icon-home icon-white"></i></div>
+					面板
+				</a>
+			</li>
+			<li class='active open'>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+						数据库更新
+					<img src="/static/img/toggle-subnav-up-white.png" alt="">
+				</a>
+				<ul class='collapsed-nav'>
+					<li class='active'>
+						<a href="/mysqldata/">
+							MySQL 更新
+						</a>
+					</li>
+					{% if num3 == 1 %}
+					<li>
+						<a href="/serverdatalist/">
+							MySQL/Server配置
+						</a>
+					</li>
+					{% endif %}
+				</ul>
+			</li>
+			{% if num3 == 1 %}
+			<li>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+					数据库监控
+					<img src="/static/img/toggle-subnav-down.png" alt="">
+				</a>
+				<ul class='collapsed-nav closed'>
+					<li>
+						<a href="/mysqlmonitor/">
+							DB监控配置
+						</a>
+					</li>
+					<li>
+						<a href="/dbgraphshow/">
+							监控图形展示
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+					数据库report
+					<img src="/static/img/toggle-subnav-down.png" alt="">
+				</a>
+				<ul class='collapsed-nav closed'>
+					<li>
+						<a href="/mysqlreportdata/">
+							MySQL-report
+						</a>
+					</li>
+				</ul>
+			</li>
+			{% endif %}
+		</ul>
+	</div>
+	<div class="content">
+		<div class="row-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="box">
+						<div class="box-head">
+							<h3>sql执行结果</h3>
+						</div>
+						<div class="box-content box-nomargin">
+							{% if num1 == 2 %}
+							<table class='table dataTable table-bordered'>
+								<thead>
+									<tr>
+										<th>执行ID</th>
+										<th>执行方式</th>
+										<th>错误级别</th>
+										<th>执行状态</th>
+										<th>错误信息</th>
+										<th>执行的sql</th>
+										<th>影响条数</th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for item in datas %}
+									<tr>
+										<td>{{item.1}}</td>
+										{% if item.2 == 1 %}
+											<td>sql直接执行</td>
+										{% elif item.2 == 2 %}
+											<td>inception执行</td>
+										{%endif%}
+										{% if item.4 == '0' %}
+											<td>正常</td>
+										{% elif item.4 == '1' %}
+											<td>警告,不影响执行</td>
+										{% elif item.4 == '2' %}
+											<td>严重错误,必须修改</td>
+										{% endif %}
+										<td>{{item.5}}</td>
+										<td>{{item.6}}</td>
+										<td>{{item.7}}</td>
+										<td>{{item.8}}</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+							{% elif num1 == 1 %}
+							<table class='table dataTable table-bordered'>
+								<thead>
+									<tr>
+										<th>执行ID</th>
+										<th>执行步骤</th>
+										<th>执行的sql</th>
+										<th>执行结果(正常不显示)</th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for item in datas %}
+									<tr>
+										<td>{{item.1}}</td>
+										{% if item.2 == 1 %}
+											<td>sql直接执行</td>
+										{% elif item.2 == 2 %}
+											<td>inception执行</td>
+										{%endif%}
+										<td>{{item.3}}</td>
+										<td>{{item.4}}</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+							{%endif%}
+							<div class="submit">
+								<button class="btn btn-primary" onclick="javascript:history.back(-1);">返回</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/less.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.uniform.min.js"></script>
+<script src="/static/js/bootstrap.timepicker.js"></script>
+<script src="/static/js/bootstrap.datepicker.js"></script>
+<script src="/static/js/chosen.jquery.min.js"></script>
+<script src="/static/js/jquery.fancybox.js"></script>
+<script src="/static/js/plupload/plupload.full.js"></script>
+<script src="/static/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script src="/static/js/jquery.cleditor.min.js"></script>
+<script src="/static/js/jquery.inputmask.min.js"></script>
+<script src="/static/js/jquery.tagsinput.min.js"></script>
+<script src="/static/js/jquery.mousewheel.js"></script>
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<script src="/static/js/jquery.dataTables.bootstrap.js"></script>
+<script src="/static/js/jquery.textareaCounter.plugin.js"></script>
+<script src="/static/js/ui.spinner.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/tableTools/js/TableTools.min.js"></script>
+<script src="/static/js/custom.js"></script><script src="/static/js/demo.js"></script>
+</body>
+</html>

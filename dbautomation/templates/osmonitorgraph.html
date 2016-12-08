@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>tftc数据库运维平台</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="/static/css/bootstrap.css">
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.css">
+<link rel="stylesheet" href="/static/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/static/css/uniform.default.css">
+<link rel="stylesheet" href="/static/css/bootstrap.datepicker.css">
+<link rel="stylesheet" href="/static/css/jquery.cleditor.css">
+<link rel="stylesheet" href="/static/css/jquery.plupload.queue.css">
+<link rel="stylesheet" href="/static/css/jquery.tagsinput.css">
+<link rel="stylesheet" href="/static/css/jquery.ui.plupload.css">
+<link rel="stylesheet" href="/static/js/tableTools/css/TableTools.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<script src="/static/jedate/jedate.js"></script>
+<body>
+<div class="topbar">
+	<div class="container-fluid">
+		<a href="/dashboard/" class='company'>tftc数据库运维平台</a>
+		<form action="#">
+			<input type="text" value="Search here...">
+		</form>
+		<ul class='mini'>
+			<li class='dropdown dropdown-noclose supportContainer'>
+				<a href="/logout/" class='dropdown-toggle' data-toggle="dropdown">
+					<img src="/static/img/icons/fugue/control-power.png" alt="">
+					退出
+				</a>
+				<ul class="dropdown-menu pull-right custom custom-dark" />
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="breadcrumbs">
+	<div class="container-fluid">
+		<ul class="bread pull-left">
+			<li>
+				<a href="/dashboard/"><i class="icon-home icon-white"></i></a>
+			</li>
+			<li>
+				<a href="/dashboard/">
+					面板
+				</a>
+			</li>
+		</ul>
+
+	</div>
+</div>
+<div class="main">
+	<div class="container-fluid">
+	<div class="navi">
+		<ul class='main-nav'>
+			<li class='active'>
+				<a href="/dashboard/" class='light'>
+					<div class="ico"><i class="icon-home icon-white"></i></div>
+					面板
+				<!--	<span class="label label-warning">10</span> -->
+				</a>
+			</li>
+			<li>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+					数据库更新
+					<img src="/static/img/toggle-subnav-down.png" alt="">
+				</a>
+				<ul class='collapsed-nav closed'>
+					<li>
+						<a href="/mysqldata/">
+							MySQL更新
+						</a>
+					</li>
+					<li>
+						<a href="/serverdatalist/">
+							MySQL/Server配置
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class='active open'>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-tasks icon-white"></i></div>
+						数据库监控
+					<img src="/static/img/toggle-subnav-up-white.png" alt="">
+				</a>
+				<ul class='collapsed-nav'>
+					<li>
+						<a href="/mysqlmonitor/">
+							DB监控配置
+						</a>
+					</li>
+					<li class='active'>
+						<a href="/dbgraphshow/">
+							监控图形展示
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="#" class='light toggle-collapsed'>
+					<div class="ico"><i class="icon-th-large icon-white"></i></div>
+					数据库report
+					<img src="/static/img/toggle-subnav-down.png" alt="">
+				</a>
+				<ul class='collapsed-nav closed'>
+					<li>
+						<a href="/mysqlreportdata/">
+							MySQL-report
+						</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="content">
+		<div class="row-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="box">
+						<form action="/osminitorgraph" method="post" class="form-horizontal validate" onsubmit="return toVaild()">
+							<div class="box-content submit">
+								开始时间:
+								<td class="datep"><input class="datainp" id="dateinfo" name="begintime" type="text"  value="{{num5}}"/></td>
+								结束时间
+								<td class="datep"><input class="datainp" id="endtime"  name="endtime" type="text" value="{{num6}}" /></td>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="hidden" name="dbid" value="{{num7}}" />
+								<button class="btn btn-primary" >查询</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="box">
+						<div class="box-head">
+							<h3>OS数据图形展示</h3>
+						</div>
+						<div class="box-content box-nomargin">
+							<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+							<div id="main" style="height:400px"></div>
+							<!-- ECharts单文件引入 -->
+							<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+							<script type="text/javascript">
+								// 路径配置
+								require.config({
+									paths: {
+										echarts: 'http://echarts.baidu.com/build/dist'
+									}
+								});
+								require(
+            						[
+                						'echarts',
+                						'echarts/chart/line',
+                						'echarts/chart/bar'
+            						],
+									function (ec) {
+										// 基于准备好的dom，初始化echarts图表
+										var myChart = ec.init(document.getElementById('main'));
+
+										var option = {
+											title : {
+												text: 'OS-iouserd',
+											},
+											tooltip : {
+												trigger: 'axis'
+											},
+											toolbox: {
+												show : true,
+												feature : {
+													magicType : {show: true, type: ['line', 'bar']},
+													restore : {show: true},
+													saveAsImage : {show: true}
+												}
+											},
+											calculable : true,
+											xAxis : [
+												{
+													type : 'category',
+													boundaryGap : false,
+													data : {% autoescape off %}
+																{{datas.0}}
+														   {% endautoescape %}
+
+												}
+											],
+											yAxis : [
+												{
+													precision:2,
+            										min:0,
+            										max:100,
+													type : 'value',
+													axisLabel : {
+														formatter: '{value} %'
+													}
+												}
+											],
+											series : [
+												{
+													name:'OS-iouserd',
+													type:'line',
+													symbol:'none',
+													data:{% autoescape off %}
+																{{datas.1}}
+														   {% endautoescape %},
+													markLine : {
+														data : [
+															{type : 'average', name: '平均值'}
+														]
+													}
+												}
+											]
+										};
+
+										// 为echarts对象加载数据
+										myChart.setOption(option);
+									}
+								);
+							</script>
+						</div>
+
+						<div class="box-content box-nomargin">
+							<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+							<div id="main1" style="height:400px"></div>
+							<!-- ECharts单文件引入 -->
+							<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+							<script type="text/javascript">
+								// 路径配置
+								require.config({
+									paths: {
+										echarts: 'http://echarts.baidu.com/build/dist'
+									}
+								});
+								require(
+            						[
+                						'echarts',
+                						'echarts/chart/line',
+                						'echarts/chart/bar'
+            						],
+									function (ec) {
+										// 基于准备好的dom，初始化echarts图表
+										var myChart1 = ec.init(document.getElementById('main1'));
+
+										var option1 = {
+											title : {
+												text: 'OS-freecpu',
+											},
+											tooltip : {
+												trigger: 'axis'
+											},
+											toolbox: {
+												show : true,
+												feature : {
+													magicType : {show: true, type: ['line', 'bar']},
+													restore : {show: true},
+													saveAsImage : {show: true}
+												}
+											},
+											calculable : true,
+											xAxis : [
+												{
+													type : 'category',
+													boundaryGap : false,
+													data : {% autoescape off %}
+																{{datas1.0}}
+														   {% endautoescape %}
+
+												}
+											],
+											yAxis : [
+												{
+													precision:2,
+            										min:0,
+            										max:100,
+													type : 'value',
+													axisLabel : {
+														formatter: '{value} %'
+													}
+												}
+											],
+											series : [
+												{
+													name:'OS-freecpu',
+													type:'line',
+													symbol:'none',
+													data:{% autoescape off %}
+																{{datas1.1}}
+														   {% endautoescape %},
+													markLine : {
+														data : [
+															{type : 'average', name: '平均值'}
+														]
+													}
+												}
+											]
+										};
+
+										// 为echarts对象加载数据
+										myChart1.setOption(option1);
+									}
+								);
+							</script>
+						</div>
+
+						<div class="box-content box-nomargin">
+							<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+							<div id="main2" style="height:400px"></div>
+							<!-- ECharts单文件引入 -->
+							<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+							<script type="text/javascript">
+								// 路径配置
+								require.config({
+									paths: {
+										echarts: 'http://echarts.baidu.com/build/dist'
+									}
+								});
+								require(
+            						[
+                						'echarts',
+                						'echarts/chart/line',
+                						'echarts/chart/bar'
+            						],
+									function (ec) {
+										// 基于准备好的dom，初始化echarts图表
+										var myChart2 = ec.init(document.getElementById('main2'));
+
+										var option2 = {
+											title : {
+												text: 'OS-mload',
+											},
+											tooltip : {
+												trigger: 'axis'
+											},
+											legend: {
+												data:['os-1mload','os-5mload','os-15mload']
+											},
+											toolbox: {
+												show : true,
+												feature : {
+													magicType : {show: true, type: ['line', 'bar']},
+													restore : {show: true},
+													saveAsImage : {show: true}
+												}
+											},
+											calculable : true,
+											xAxis : [
+												{
+													type : 'category',
+													boundaryGap : false,
+													data : {% autoescape off %}
+																{{datas2.0}}
+														   {% endautoescape %}
+
+												}
+											],
+											yAxis : [
+												{
+													type : 'value',
+													axisLabel : {
+														formatter: '{value} '
+													}
+												}
+											],
+											series : [
+												 {
+													name:'os-1mload',
+													type:'line',
+													symbol:'none',
+													data:{% autoescape off %}
+																{{datas2.1}}
+														   {% endautoescape %}
+												},
+												{
+													name:'os-5mload',
+													type:'line',
+													symbol:'none',
+													data:{% autoescape off %}
+																{{datas2.2}}
+														   {% endautoescape %}
+												},
+												{
+													name:'os-15mload',
+													type:'line',
+													symbol:'none',
+													data:{% autoescape off %}
+																{{datas2.3}}
+														   {% endautoescape %}
+												}
+											]
+										};
+
+										// 为echarts对象加载数据
+										myChart2.setOption(option2);
+									}
+								);
+							</script>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    //jeDate.skin('gray');
+    jeDate({
+		dateCell:"#dateinfo",
+		format:"YYYY-MM-DD hh:mm:ss",
+		isinitVal:true,
+		isTime:true, //isClear:false,
+		minDate:"2014-09-19 00:00:00",
+		okfun:function(val){alert(val)}
+	})
+	jeDate({
+		dateCell:"#endtime",
+		format:"YYYY-MM-DD hh:mm:ss",
+		isinitVal:true,
+		isTime:true, //isClear:false,
+		minDate:"2014-09-19 01:00:00",
+		okfun:function(val){alert(val)}
+	})
+</script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/less.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.uniform.min.js"></script>
+<script src="/static/js/bootstrap.timepicker.js"></script>
+<script src="/static/js/bootstrap.datepicker.js"></script>
+<script src="/static/js/chosen.jquery.min.js"></script>
+<script src="/static/js/jquery.fancybox.js"></script>
+<script src="/static/js/plupload/plupload.full.js"></script>
+<script src="/static/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script src="/static/js/jquery.cleditor.min.js"></script>
+<script src="/static/js/jquery.inputmask.min.js"></script>
+<script src="/static/js/jquery.tagsinput.min.js"></script>
+<script src="/static/js/jquery.mousewheel.js"></script>
+<script src="/static/js/jquery.dataTables.min.js"></script>
+<script src="/static/js/jquery.dataTables.bootstrap.js"></script>
+<script src="/static/js/jquery.textareaCounter.plugin.js"></script>
+<script src="/static/js/ui.spinner.js"></script>
+<script src="/static/js/jquery.cookie.js"></script>
+<script src="/static/js/tableTools/js/TableTools.min.js"></script>
+<script src="/static/js/custom.js"></script><script src="/static/js/demo.js"></script>
+</body>
+</html>
